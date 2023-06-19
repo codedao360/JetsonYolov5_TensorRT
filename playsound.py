@@ -8,15 +8,6 @@ Gst.init(None)
 # Create a new pipeline
 pipeline = Gst.Pipeline()
 
-#Function on demux pad
-def on_demux_pad_added(element, pad):
-    # Get the name of the pad's parent element
-    parent_name = pad.get_parent_element().get_name()
-
-    # If the parent element is a Vorbis decoder, link the pad to it
-    if parent_name == 'vorbisdec':
-        pad.link(parent.get_static_pad('sink'))
-
 # Create a file source to read the Ogg Vorbis file
 filesrc = Gst.ElementFactory.make('filesrc', 'filesrc')
 filesrc.set_property('location', 'sine.ogg')
@@ -46,7 +37,7 @@ pipeline.add(pulsesink)
 
 # Link the elements together
 filesrc.link(oggdemux)
-oggdemux.connect('pad-added', on_demux_pad_added)
+oggdemux.link(vorbisdec)
 vorbisdec.link(audioconvert)
 audioconvert.link(audioresample)
 audioresample.link(pulsesink)
@@ -69,4 +60,3 @@ except KeyboardInterrupt:
 
 # Stop playing the pipeline
 pipeline.set_state(Gst.State.NULL)
-
