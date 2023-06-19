@@ -1,7 +1,7 @@
 import sys
 import cv2 
 import imutils
-from yoloDet import YoloTRT
+from yoloDet_traffic import YoloTRT
 
 # use path for library and engine file
 model = YoloTRT(library="yolov5/build/libmyplugins.so", engine="yolov5/build/USTH_model5s.engine", conf=0.5, yolo_ver="v5")
